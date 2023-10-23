@@ -1,0 +1,1246 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="渡人">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1.传输层服务概述  传输层协议为运行在不同Host上的进程提供了一种端到端的逻辑通信机制。  发送方：将应用递交的信息分成一个或多个报文段，并向下传给网络层 接收方：将接收到的报文段组装成消息，并向上递交给应用层   1.1 传输层 vs. 网络层  网络层：提供主机之间的逻辑通信机制 传输层：提供应用进程之间的逻辑通信机制  位于网络层之上，依赖于网络层服务 对网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络笔记(3)——传输层">
+<meta property="og:url" content="http://example.com/2023/10/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E2%80%94%E2%80%94%E4%BC%A0%E8%BE%93%E5%B1%82/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.传输层服务概述  传输层协议为运行在不同Host上的进程提供了一种端到端的逻辑通信机制。  发送方：将应用递交的信息分成一个或多个报文段，并向下传给网络层 接收方：将接收到的报文段组装成消息，并向上递交给应用层   1.1 传输层 vs. 网络层  网络层：提供主机之间的逻辑通信机制 传输层：提供应用进程之间的逻辑通信机制  位于网络层之上，依赖于网络层服务 对网络">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/10/03/MhiQGTmRgnqNF2K.jpg">
+<meta property="og:image" content="https://s2.loli.net/2023/10/11/i1Eo3gC7GfJx9AX.png">
+<meta property="og:image" content="https://s2.loli.net/2023/10/03/GlOHf51DR9Yw8dk.jpg">
+<meta property="og:image" content="https://s2.loli.net/2023/10/03/jP4v3uONGgUIFVC.png">
+<meta property="og:image" content="https://s2.loli.net/2023/10/03/N6qisAxzaDmuEj7.png">
+<meta property="article:published_time" content="2023-10-23T15:30:51.000Z">
+<meta property="article:modified_time" content="2023-10-23T15:31:20.950Z">
+<meta property="article:author" content="渡人">
+<meta property="article:tag" content="原创">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/10/03/MhiQGTmRgnqNF2K.jpg">
+  
+  
+  
+  <title>计算机网络笔记(3)——传输层 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"E13Ye18VEXYjwGFoVZxxv2G8-gzGzoHsz","app_key":"qNDeEBuvBRUl7S9g7MWFqGan","server_url":"https://e13ye18v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>渡人</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机网络笔记(3)——传输层"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-23 23:30" pubdate>
+          2023年10月23日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          47 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计算机网络笔记(3)——传输层</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="传输层服务概述">1.传输层服务概述</h1>
+<ul>
+<li>传输层协议为运行在不同Host上的进程提供了一种端到端的逻辑通信机制。
+<ul>
+<li>发送方：将应用递交的信息分成一个或多个报文段，并向下传给网络层</li>
+<li>接收方：将接收到的报文段组装成消息，并向上递交给应用层</li>
+</ul></li>
+</ul>
+<h2 id="传输层-vs.-网络层">1.1 传输层 vs. 网络层</h2>
+<ul>
+<li>网络层：提供主机之间的逻辑通信机制</li>
+<li>传输层：提供应用进程之间的逻辑通信机制
+<ul>
+<li>位于网络层之上，依赖于网络层服务</li>
+<li>对网络层服务进行（可能的）增强</li>
+</ul></li>
+</ul>
+<h2 id="internet的传输层协议">1.2 Internet的传输层协议</h2>
+<ul>
+<li>TCP协议
+<ul>
+<li>可靠的、按序的交付服务</li>
+<li>拥塞控制</li>
+<li>流量控制</li>
+<li>面向连接</li>
+</ul></li>
+<li>UDP协议
+<ul>
+<li>不可靠的交付服务</li>
+<li>基于“尽力而为交付服务”的网络层，没有做可靠性方面的扩展</li>
+</ul></li>
+</ul>
+<h1 id="多路复用和多路分用">2.多路复用和多路分用</h1>
+<ul>
+<li>多路复用：在源主机从不同套接字中收集数据块，并为每个数据块封装上首部信息，从而生成报文段，然后将报文段传递到网络层，所有这些工作称之为多路复用</li>
+<li>多路分用：将运输层报文段中的数据交付到正确的套接字称为多路分用
+<ul>
+<li>多路分用工作流程
+<ul>
+<li>主机接受到IP数据报
+<ul>
+<li>每个数据报携带源IP地址、目的IP地址</li>
+<li>每个数据报携带一个传输层的段（Segment），每个段携带源端口号和目的端口号</li>
+</ul></li>
+<li>主机收到报文段后，传输层协议提取IP地址和端口号信息，将报文段导向相应的套接字</li>
+</ul></li>
+</ul></li>
+<li>无连接多路分用
+<ul>
+<li>利用端口号创建套接字
+<ul>
+<li>UDP的套接字用二元组标识：（目的IP地址，目的端口号）</li>
+</ul></li>
+<li>主机收到UDP段后
+<ul>
+<li>检查段中的目的端口号</li>
+<li>将UDP段导向绑定在该端口号的套接字</li>
+</ul></li>
+</ul></li>
+</ul>
+<blockquote>
+<p>注：来自不同源IP地址或源端口号的IP数据报可以被导向同一个套接字</p>
+</blockquote>
+<ul>
+<li>面向连接的多路分用 vs. 无连接多路复用
+<ul>
+<li>TCP的套接字用四元组标识
+<ul>
+<li>源IP地址</li>
+<li>源端口号</li>
+<li>目的IP地址</li>
+<li>目的端口号</li>
+</ul></li>
+<li>服务器可能同时支持多个TCP套接字
+<ul>
+<li>Web服务器为每个客户端开不同的套接字</li>
+</ul></li>
+</ul></li>
+</ul>
+<blockquote>
+<p>TCP连接只能由一个客户机进程导向一个服务器进程，反之亦然。故来自不同源IP地址或源端口号的数据报不可能被导向同一个套接字</p>
+</blockquote>
+<h1 id="udp协议user-datagram-protocol">3.UDP协议（User Datagram
+Protocol）</h1>
+<ul>
+<li>实现多路复用/分用与简单的错误校验</li>
+<li>基于“尽力而为交付服务”，UDP段可能丢失或非按序到达</li>
+<li>无需建立连接
+<ul>
+<li>UDP发送方和接收方之间不需要握手</li>
+<li>每个UDP段的处理独立于其他段</li>
+<li>显著减少延迟</li>
+</ul></li>
+<li>无需维护连接状态，实现简单</li>
+<li>分组头部开销少</li>
+<li>没有拥塞控制，应用可以更好地控制发送时间和速率</li>
+<li>UDP报文段格式 <img
+src="https://s2.loli.net/2023/10/03/qxvEj7b54UGgi8M.png" srcset="/img/loading.gif" lazyload /></li>
+</ul>
+<h2 id="udp校验和">3.1 UDP校验和</h2>
+<ul>
+<li>检验和用于确定当UDP报文段从源到达目的地移动时，其中的比特是否发生了改变</li>
+<li>校验和计算：发送方将所有16比特字的和进行计算，进位加在和的后面，将得到的值按位求反，得到校验和，放入UDP报文的校验和字段（checksum）</li>
+<li>接收方计算所收到段的校验和，将其与校验和字段进行对比
+<ul>
+<li>不相等：检测出错误</li>
+<li>相等：检测出错误</li>
+</ul></li>
+</ul>
+<h1 id="可靠数据传输原理">4.可靠数据传输原理</h1>
+<ul>
+<li>可靠数据传输保证数据从发送端到接收端内容不错、不丢包、顺序不乱 <img
+src="https://s2.loli.net/2023/10/03/4opsTX7yqLUZjY1.jpg" srcset="/img/loading.gif" lazyload /></li>
+<li>利用状态机（Finite State Machine,FSM）刻画传输协议
+<ul>
+<li>圆圈代表发送方或接受方的状态</li>
+<li>箭头代表状态的转换</li>
+<li>横线上面的函数表示引起变迁的事件，横线下面的函数代表事件发生时所采取的操作
+<ul>
+<li>若进行状态转换不必进行其他操作，则用^表示</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="rdt-1.0">4.1 Rdt 1.0：</h2>
+<p><img src="https://s2.loli.net/2023/10/03/MhiQGTmRgnqNF2K.jpg" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="rdt-2.0具有比特差错信道的可靠数据传输">4.2 Rdt
+2.0：具有比特差错信道的可靠数据传输</h2>
+<ul>
+<li>底层信道中传输的数据可能发生位错误，故需要引入如下功能完善协议
+<ul>
+<li>差错检测：提供一种机制使得接收方检测到比特差错</li>
+<li>接收方反馈：提供一种确认机制，使得接收方可以显式告诉发送方分组正确接收。rdt
+2.0协议将从接收方向发送方发送肯定确认分组（ACK）和否定分组（NAK）</li>
+<li>重传：发送方收到NAK后，重传分组 <img
+src="https://s2.loli.net/2023/10/03/dcMItSmv8XK7AZ9.jpg" srcset="/img/loading.gif" lazyload /></li>
+</ul></li>
+</ul>
+<h2 id="rdt-2.1">4.3 Rdt 2.1</h2>
+<ul>
+<li>Rdt 2.0协议存在缺陷——未考虑ACK/NAK消息被破坏的现象
+<ul>
+<li>为ACK、NAK添加校验和，检错纠错。接收方不知道ACK/NAK是否正确被发送方收到</li>
+<li>如果ACK/NAK坏掉，发送方重传。但存在接收方存在重复分组的可能
+<ul>
+<li>引入序列号（sequence number），让发送方对其数据分组添加序列号</li>
+<li>接收方丢弃序列号重复的分组 发送方的FSM描述见下图 <img
+src="https://s2.loli.net/2023/10/03/Uwz2qKhBW1EHpf3.jpg" srcset="/img/loading.gif" lazyload />
+接收方的FSM见下图 <img
+src="https://s2.loli.net/2023/10/03/BvjfCo3DRAi9PlY.jpg" srcset="/img/loading.gif" lazyload /></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="rdt-2.2无nak消息协议">4.4 Rdt 2.2：无NAK消息协议</h2>
+<ul>
+<li>在Rdt 2.1的基础上，只使用ACK
+<ul>
+<li>接收方通过ACK告知最后一个被正确接收的分组</li>
+<li>在ACK消息中显式地加入被确认分组的序列号</li>
+<li>若收到带有重复序列号的ACK，则重传当前分组</li>
+</ul></li>
+</ul>
+<h2 id="rdt-3.0">4.5 Rdt 3.0</h2>
+<ul>
+<li>Rdt 2.0没有考虑信道丢包的问题</li>
+<li>设置<strong>定时器</strong>，发送方等待一段时间
+<ul>
+<li>如果在这段时间内没收到ACK，发送方重传分组</li>
+<li>如果分组或ACK在定时器终止之后到达
+<ul>
+<li>会导致发送方重传分组，利用序列号机制处理冗余数据分组</li>
+<li>接收方在ACK中显式告知所确认的分组 发送方FSM如下图所示 <img
+src="https://s2.loli.net/2023/10/03/f4lThBQrxpHSudj.jpg" srcset="/img/loading.gif" lazyload /> Rdt
+3.0示例如下图所示 <img
+src="https://s2.loli.net/2023/10/03/QjmTK453UMbG9ov.jpg" srcset="/img/loading.gif" lazyload /> <img
+src="https://s2.loli.net/2023/10/03/I7cRPLyCzY4VKqx.jpg" srcset="/img/loading.gif" lazyload /></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="流水线可靠数据传输协议">4.6 流水线可靠数据传输协议</h2>
+<ul>
+<li><p>Rdt 3.0协议功能正确，但性能糟糕</p>
+<ul>
+<li>对于一条发送速率为1Gbps的链路，假定往返传播时延RTT为30ms，利用Rdt
+3.0协议发送一个1000B的分组，则发送方的信道利用率仅为： <span
+class="math display">\[
+U_{sender} =  \frac{L/R}{RTT+L/R} = \frac{0.008}{30.008} = 0.00027
+\]</span></li>
+</ul></li>
+<li><p>解决上述低效的性能问题的方法：不以停等方式运行，允许发送方发送多个分组无需等待确认。这种技术也称为流水线技术。利用此技术，可靠数据传输协议需要：</p>
+<ul>
+<li>增加序列号范围</li>
+<li>发送方和接收方缓存多个分组</li>
+<li>解决差错恢复问题——<strong>GBN、SR协议</strong></li>
+</ul></li>
+<li><p>流水线可靠数据传输协议发送方信道利用率的公式：</p>
+<p><span class="math display">\[
+U_{sender} = \frac{n \times L/R}{RTT+L/R}
+\]</span></p>
+<ul>
+<li>（最大）信道利用率就是一个传输周期内信道传输数据的时间与总时间之比。</li>
+<li>下图可以辅助理解记忆公式：</li>
+<li><figure>
+<img src="https://s2.loli.net/2023/10/11/i1Eo3gC7GfJx9AX.png" srcset="/img/loading.gif" lazyload
+alt="image.png" />
+<figcaption aria-hidden="true">image.png</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h3 id="gbngo-back-n协议">4.6.1 GBN(Go-Back-N)协议</h3>
+<p><img src="https://s2.loli.net/2023/10/03/GlOHf51DR9Yw8dk.jpg" srcset="/img/loading.gif" lazyload /></p>
+<ul>
+<li>上图展示了在GBN发送方看到的序号
+<ul>
+<li>send_base：最早未确认分组的序号</li>
+<li>nextseqnum：下一个待发送分组的序号</li>
+<li>N：已发送但未确认分组的序号范围，可看做长度为N的窗口。</li>
+</ul></li>
+<li>GBN发送方扩展FSM如下图所示 <img
+src="https://s2.loli.net/2023/10/03/TmEl5cHA6etu241.jpg" srcset="/img/loading.gif" lazyload /></li>
+<li>GBN发送方必须响应3种类型的事件
+<ul>
+<li><strong>上层调用</strong>。当上层调用rdt_send()时，发送方首先检查窗口是否已满（是否有N个已发送未确认的分组）。若窗口未满，则产生产生一个分组并发送。</li>
+<li><strong>收到ACK</strong>。GBN协议对序列号为n的分组的确认采用<strong>累计确认</strong>的方式，即表明接收方已经正确接收到序列号为n以及它以前的所有分组。</li>
+<li><strong>超时事件</strong>。GBN协议仅为最早的已发送但未确认的分组设置定时器。如果出现超时，GBN<strong>重传所有已发送未确认的分组</strong>。</li>
+</ul></li>
+<li>GBN接收方的扩展FSM如下图所示 <img
+src="https://s2.loli.net/2023/10/03/bBqwXaO9ctr2LyV.jpg" srcset="/img/loading.gif" lazyload />
+<ul>
+<li>如果接收方按序收到分组，那么为该分组发送一个ACK，并将分组中的数据提交给上层</li>
+<li>GBN协议直接丢弃乱序到达的分组，重新发送序列号最大的、按序到达的分组的ACK</li>
+</ul></li>
+<li>GBN协议示例 <img
+src="https://s2.loli.net/2023/10/03/sLxebiftHNYoV8d.jpg" srcset="/img/loading.gif" lazyload /></li>
+</ul>
+<h3 id="srselective-repeat协议">4.6.2 SR(Selective Repeat)协议</h3>
+<p><img src="https://s2.loli.net/2023/10/03/jP4v3uONGgUIFVC.png" srcset="/img/loading.gif" lazyload /></p>
+<ul>
+<li><p>上图展示了SR发送方和接收方的序号空间</p>
+<ul>
+<li>接收方对每个分组单独进行确认
+<ul>
+<li>设置缓存机制，缓存乱序到达的分组，而非丢弃</li>
+</ul></li>
+<li>为每个分组设置定时器，只重传那些没收到ACK的分组</li>
+<li>发送方和接收方同样都有大小为N的窗口长度</li>
+</ul></li>
+<li><p>SR协议发送方行为</p>
+<ul>
+<li>从上层收到数据。发送方首先检查下一个可用于该分组的序号。若在窗口内，则将数据打包发送，类似于GBN。</li>
+<li>超时。每个分组拥有自己的定时器。超时发生则重传超时的分组。</li>
+<li>收到ACK。将收到ACK的分组标记为已收到。若序号为send_base，则窗口的send_base向前移动到具有最小序号的未确认分组处</li>
+</ul></li>
+<li><p>SR协议接收方行为</p>
+<ul>
+<li>接收到序号在[rcvbase,rcvbase+N-1]的分组：发送ACK
+<ul>
+<li>乱序：缓存该分组</li>
+<li>若序列号为rcvbase，则把改分组以及以前缓存的序号连续的分组一起交付给上层。</li>
+</ul></li>
+<li>序列号在[rcvbase-N,rcvbase-1]
+<ul>
+<li>发送ACK</li>
+</ul></li>
+<li>其他情况忽略掉 下图是SR协议的一个示例 <img
+src="https://s2.loli.net/2023/10/03/ekofE4DmMWgvSbz.png" srcset="/img/loading.gif" lazyload /></li>
+</ul></li>
+<li><p>序列号空间大小与窗口尺寸的关系：</p>
+<p><span class="math display">\[
+N_s +N_r \leq 2^L
+\]</span></p>
+<ul>
+<li><span class="math inline">\(N_s\)</span>：发送方窗口大小</li>
+<li><span class="math inline">\(N_r\)</span>：接收方窗口大小</li>
+<li><span class="math inline">\(L\)</span>：序列号比特数</li>
+</ul>
+<blockquote>
+<p>GBN协议中，接收方窗口大小为1。</p>
+</blockquote></li>
+</ul>
+<h1 id="面向连接传输协议tcp">5.面向连接传输协议：TCP</h1>
+<h2 id="tcp概述">5.1 TCP概述</h2>
+<ul>
+<li>TCP被称为<strong>面向连接的</strong>
+<ul>
+<li>一个应用进程可以开始向另一个应用进程发送数据之前，这两个进程必须握手，即相互发送预备报文段，确保数据传输的参数</li>
+</ul></li>
+<li>TCP连接提供的是<strong>全双工服务</strong>
+<ul>
+<li>同一连接中可以传输双向数据流</li>
+</ul></li>
+<li>TCP连接是点对点的，是在单个发送方和单个接收方之间的连接。</li>
+<li>TCP连接的组成包括：两台主机上的缓存、变量和与进程连接的套接字</li>
+<li>TCP报文段结构如下图所示 <img
+src="https://s2.loli.net/2023/10/03/EKgum17eXFWyTws.png" srcset="/img/loading.gif" lazyload /></li>
+<li>TCP报文段的序列号
+<ul>
+<li>序列号是报文段首字节的字节流编号，不是报文段的编号</li>
+<li>建立TCP连接时，双方随机选择序列号</li>
+</ul></li>
+<li>TCP的确认号
+<ul>
+<li>期望接收到的下一个字节的序列号</li>
+<li>TCP提供<strong>累计确认</strong>：该序列号之前的所有字节均已被正确接收到</li>
+</ul></li>
+</ul>
+<h2 id="tcp可靠数据传输">5.2 TCP可靠数据传输</h2>
+<ul>
+<li>TCP使用流水线机制、累计确认的方式，并且使用单一重传计时器。在超时或者收到重复ACK会重传报文段</li>
+<li>TCP连接RTT的估计
+<ul>
+<li>参考RTT可以设置定时器的超时时间。
+<ul>
+<li>超时时间需要大于RTT，但大于RTT会对段丢失的反应时间较慢</li>
+<li>超时时间若小于RTT，会造成不必要的重传</li>
+</ul></li>
+<li>TCP为一个已发送的但目前尚未确认的报文段估计一个SampleRTT，测量多次SampleRTT，求平均值，形成RTT估计值EstimatedRTT</li>
+<li>测量RTT的变化值，即SampleRTT与EstimatedRTT的差值，得到DevRTT。</li>
+<li>超时时间设置为EstimatedRTT+4*DevRTT</li>
+</ul></li>
+<li>TCP发送方事件
+<ul>
+<li>创建Segment</li>
+<li>序列号是Segment第一个字节的编号</li>
+<li>开启计时器</li>
+<li>设置超时时间</li>
+<li>若计时器超时
+<ul>
+<li>重传引起超时的Segment</li>
+<li>重启定时器</li>
+</ul></li>
+<li>收到ACK
+<ul>
+<li>如果确认此前未确认的Segment，更新SendBase，滑动窗口向前滑动</li>
+<li>如果窗口中还有未被确认的分组，重新启动定时器</li>
+</ul></li>
+</ul></li>
+<li>下面展示了TCP进行重传的示例 <img
+src="https://s2.loli.net/2023/10/03/T345mEV9dZvMh7c.png" srcset="/img/loading.gif" lazyload /> <img
+src="https://s2.loli.net/2023/10/03/KguUGFYwVlZDAas.png" srcset="/img/loading.gif" lazyload /></li>
+<li>接收方产生 ACK 的事件
+<ul>
+<li>所期望序号的按需报文段已经到达，且以前的数据都已经ACKed
+<ul>
+<li>延迟发送ACK，最多等待500ms，如果在这期间没有一个按序报文段到达，则发送一个ACK</li>
+</ul></li>
+<li>所期望序号的按需报文段已经到达，且有一个按序报文段等待ACK传输
+<ul>
+<li>发送单个累计确认ACK，确认两个按序报文段</li>
+</ul></li>
+<li>比期望序号大的失序报文段到达
+<ul>
+<li>发送冗余ACK（再次确认某个报文段的ACK，发送方先前已收到）</li>
+</ul></li>
+<li>能部分或完全填充接受数据间隔的报文段到达
+<ul>
+<li>该报文段若起始于间隔的低端，则立即发送ACK</li>
+</ul></li>
+</ul></li>
+<li>快速重传机制
+<ul>
+<li>如果分组丢失而发生超时，超时时间间隔将重新设置为原来的两倍，使得重发丢失的分组之前要等待很长时间，故建立快速重传机制</li>
+<li>快速重传机制——通过重复ACK判断分组丢失
+<ul>
+<li>发送方以流水线方式一个接一个地发送大量报文段，如果某个分组丢失，可能会引发多个冗余ACK</li>
+<li>发送方收到同一数据的3个ACK，就执行快速重传，即在该报文段定时器过期之前就重传丢失的报文段</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="tcp流量控制">5.3TCP流量控制</h2>
+<ul>
+<li>接收方为TCP连接分配buffer，进行流量控制可以使得发送方不会传输过多过快，导致buffer溢出</li>
+<li>流量控制机制
+<ul>
+<li>发送方维护一个接收窗口(rwnd)的变量，指示接收方还有多少可用的缓存空间
+<ul>
+<li>接受窗口计算：RcvWindow = RcvBuffer-[LastByteRcvd - LastByteRead]
+<ul>
+<li>LastByteRcvd：到达并放入接收方缓存中的数据流的最后一个字节的编号</li>
+<li>LastByteRead：接收方从缓存中读出的数据流中最后一个字节的编号</li>
+</ul></li>
+</ul></li>
+<li>接收方通过在报文段的头部字段将Rcvwindow告诉发送方</li>
+<li>发送方限制自己已经发送的但还未收到ACK的数据不超过接收方的空闲RcvWindow尺寸</li>
+</ul></li>
+</ul>
+<h2 id="tcp连接管理">5.4 TCP连接管理</h2>
+<ul>
+<li>TCP连接创建过程被称作三次握手
+<ol type="1">
+<li>客户端TCP首先向服务器端的TCP发送一个SYN报文段。该报文段不包含数据且SYN置为1，客户端随机选择初始序列号。</li>
+<li>服务器收到SYN报文段，为该TCP连接分配TCP缓存和变量，并向该客户TCP发送SYNACK报文段。其中SYN置为1</li>
+<li>客户端收到SYNACK报文段，向服务器发送一个报文段，这对服务器允许连接的报文段进行确认。客户端发送的报文段可以写到客户到服务器的数据。
+<img src="https://s2.loli.net/2023/10/03/N6qisAxzaDmuEj7.png" srcset="/img/loading.gif" lazyload /></li>
+</ol></li>
+<li>TCP关闭连接的过程又被称为四次挥手
+<ol type="1">
+<li>客户端向服务器发送时带有FIN比特置为1的TCP报文段，并进入FIN_WAIT_1状态</li>
+<li>服务器收到FIN报文段，回复ACK。关闭连接，发送FIN报文段</li>
+<li>客户机收到ACK，进入FIN_WAIT_2状态。接着客户机收到FIN报文段，进入TIME_WAIT状态，向服务器发送ACK</li>
+<li>服务器收到ACK，连接正式关闭 <img
+src="https://s2.loli.net/2023/10/03/DRmSN2dGyu9Pqo4.png" srcset="/img/loading.gif" lazyload /></li>
+</ol></li>
+</ul>
+<h2 id="tcp拥塞控制">5.5 TCP拥塞控制</h2>
+<ul>
+<li>设置<strong>拥塞窗口</strong>变量cwnd动态调整以改变发送速率</li>
+</ul>
+<p><span class="math display">\[
+$LastByteSent-LastByteAcked ≤ \{cwnd，rwnd \}
+\]</span></p>
+<p><span class="math display">\[
+$rate \approx \frac{cwnd}{RTT} Bytes/sec
+\]</span></p>
+<ul>
+<li>发生Loss事件（timeout或3个冗余ACK）后，发送方降低速率</li>
+<li>加性增——乘性减（AIMD）
+<ul>
+<li>每个RTT内cwnd线性增加一个MSS（最大段长度），线性增加拥塞窗口长度</li>
+<li>出现Loss事件后，将cwnd减半 <img
+src="https://s2.loli.net/2023/10/03/74KzAUmxadQvMNn.png" srcset="/img/loading.gif" lazyload
+alt="image.png" /></li>
+</ul></li>
+<li>慢启动（SS）
+<ul>
+<li>TCP连接开始时，cwnd=1</li>
+<li>每当确认一个报文段，cwnd加1</li>
+<li>慢启动阶段拥塞窗口指数级增长</li>
+<li>定义状态变量ssthresh（慢启动阈值）。
+<ul>
+<li>当检测到拥塞时（发生Loss事件），将ssthresh设置为拥塞窗口的一半。</li>
+<li>当cwnd由慢启动状态增长到达或超过ssthresh时，结束慢启动状态 <img
+src="https://s2.loli.net/2023/10/03/IEF9zpNXQj6OrlG.png" srcset="/img/loading.gif" lazyload
+alt="image.png" /></li>
+</ul></li>
+</ul></li>
+<li>Loss事件处理
+<ul>
+<li>3个冗余ACKs
+<ul>
+<li>cwnd变为原来的一半</li>
+<li>然后线性增长</li>
+</ul></li>
+<li>Timeout事件
+<ul>
+<li>cwnd直接设为1个MSS</li>
+<li>然后指数增长</li>
+<li>达到ssthresh后,再线性增长</li>
+</ul></li>
+</ul></li>
+<li><strong>总结</strong>
+<ul>
+<li>当拥塞窗口低于ssthresh时，发送方以慢启动状态使得拥塞窗口指数增长</li>
+<li>当拥塞窗口超过ssthresh时，发送方进入拥塞避免状态，拥塞窗口线性增长</li>
+<li>3个冗余ACK出现时，ssthresh设置为拥塞窗口的一半，拥塞窗口设置为新的ssthresh</li>
+<li>超时事件发生时，ssthresh设置为拥塞窗口的一半，拥塞窗口设置为1</li>
+</ul></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%8E%9F%E5%88%9B/" class="print-no-link">#原创</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机网络笔记(3)——传输层</div>
+      <div>http://example.com/2023/10/23/计算机网络笔记-3-——传输层/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>渡人</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/10/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-2-%E2%80%94%E2%80%94%E5%BA%94%E7%94%A8%E5%B1%82/" title="计算机网络笔记(2)——应用层">
+                        <span class="hidden-mobile">计算机网络笔记(2)——应用层</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"E13Ye18VEXYjwGFoVZxxv2G8-gzGzoHsz","appKey":"qNDeEBuvBRUl7S9g7MWFqGan","path":"window.location.pathname","placeholder":"说点什么","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         次
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
