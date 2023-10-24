@@ -13,14 +13,14 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="渡人">
+  <meta name="author" content="星河踏月归">
   <meta name="keywords" content="">
   
     <meta name="description" content="1.传输层服务概述  传输层协议为运行在不同Host上的进程提供了一种端到端的逻辑通信机制。  发送方：将应用递交的信息分成一个或多个报文段，并向下传给网络层 接收方：将接收到的报文段组装成消息，并向上递交给应用层   1.1 传输层 vs. 网络层  网络层：提供主机之间的逻辑通信机制 传输层：提供应用进程之间的逻辑通信机制  位于网络层之上，依赖于网络层服务 对网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="计算机网络笔记(3)——传输层">
-<meta property="og:url" content="http://example.com/2023/10/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E2%80%94%E2%80%94%E4%BC%A0%E8%BE%93%E5%B1%82/index.html">
-<meta property="og:site_name" content="渡人-博客">
+<meta property="og:title" content="【计算机网络笔记】传输层">
+<meta property="og:url" content="https://tech-hao.github.io/2023/10/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E2%80%94%E2%80%94%E4%BC%A0%E8%BE%93%E5%B1%82/index.html">
+<meta property="og:site_name" content="星河踏月归-博客">
 <meta property="og:description" content="1.传输层服务概述  传输层协议为运行在不同Host上的进程提供了一种端到端的逻辑通信机制。  发送方：将应用递交的信息分成一个或多个报文段，并向下传给网络层 接收方：将接收到的报文段组装成消息，并向上递交给应用层   1.1 传输层 vs. 网络层  网络层：提供主机之间的逻辑通信机制 传输层：提供应用进程之间的逻辑通信机制  位于网络层之上，依赖于网络层服务 对网络">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2023/10/03/MhiQGTmRgnqNF2K.jpg">
@@ -29,15 +29,15 @@
 <meta property="og:image" content="https://s2.loli.net/2023/10/03/jP4v3uONGgUIFVC.png">
 <meta property="og:image" content="https://s2.loli.net/2023/10/03/N6qisAxzaDmuEj7.png">
 <meta property="article:published_time" content="2023-10-23T15:30:51.000Z">
-<meta property="article:modified_time" content="2023-10-23T15:31:20.950Z">
-<meta property="article:author" content="渡人">
+<meta property="article:modified_time" content="2023-10-24T08:48:00.912Z">
+<meta property="article:author" content="星河踏月归">
 <meta property="article:tag" content="原创">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://s2.loli.net/2023/10/03/MhiQGTmRgnqNF2K.jpg">
   
   
   
-  <title>计算机网络笔记(3)——传输层 - 渡人-博客</title>
+  <title>【计算机网络笔记】传输层 - 星河踏月归-博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -75,7 +75,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"E13Ye18VEXYjwGFoVZxxv2G8-gzGzoHsz","app_key":"qNDeEBuvBRUl7S9g7MWFqGan","server_url":"https://e13ye18v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"tech-hao.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"E13Ye18VEXYjwGFoVZxxv2G8-gzGzoHsz","app_key":"qNDeEBuvBRUl7S9g7MWFqGan","server_url":"https://e13ye18v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -130,7 +130,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>渡人</strong>
+      <strong>星河踏月归</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -232,7 +232,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="计算机网络笔记(3)——传输层"></span>
+            <span id="subtitle" data-typed-text="【计算机网络笔记】传输层"></span>
           
         </div>
 
@@ -311,7 +311,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">计算机网络笔记(3)——传输层</h1>
+            <h1 id="seo-header">【计算机网络笔记】传输层</h1>
             
             
               <div class="markdown-body">
@@ -818,14 +818,14 @@ alt="image.png" /></li>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>计算机网络笔记(3)——传输层</div>
-      <div>http://example.com/2023/10/23/计算机网络笔记-3-——传输层/</div>
+      <div>【计算机网络笔记】传输层</div>
+      <div>https://tech-hao.github.io/2023/10/23/计算机网络笔记-3-——传输层/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>渡人</div>
+          <div>星河踏月归</div>
         </div>
       
       
@@ -842,9 +842,21 @@ alt="image.png" /></li>
             
               
               
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
                   </span>
                 </a>
               
@@ -867,8 +879,8 @@ alt="image.png" /></li>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/10/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-2-%E2%80%94%E2%80%94%E5%BA%94%E7%94%A8%E5%B1%82/" title="计算机网络笔记(2)——应用层">
-                        <span class="hidden-mobile">计算机网络笔记(2)——应用层</span>
+                      <a href="/2023/10/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-2-%E2%80%94%E2%80%94%E5%BA%94%E7%94%A8%E5%B1%82/" title="【计算机网络笔记】应用层">
+                        <span class="hidden-mobile">【计算机网络笔记】应用层</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
