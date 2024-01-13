@@ -4,6 +4,27 @@
   
   
   <entry>
+    <title>【编译原理】绪论</title>
+    <link href="/2024/01/12/%E3%80%90%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E3%80%91%E7%BB%AA%E8%AE%BA/"/>
+    <url>/2024/01/12/%E3%80%90%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E3%80%91%E7%BB%AA%E8%AE%BA/</url>
+    
+    <content type="html"><![CDATA[<h1 id="什么是编译">什么是编译</h1><figure><img src="https://s2.loli.net/2024/01/13/v2AKYkgybpIwUGm.png"alt="image.png" /><figcaption aria-hidden="true">image.png</figcaption></figure><p><strong>编译</strong>：将高级语言翻译成汇编语言或机器语言的过程。</p><ul><li>源语言：高级语言</li><li>目标语言：汇编语言、机器语言</li></ul><h2 id="编译器在语言处理系统的位置">编译器在语言处理系统的位置</h2><figure><img src="https://s2.loli.net/2024/01/13/DWobVt6ONhgsmRY.png"alt="image.png" /><figcaption aria-hidden="true">image.png</figcaption></figure><ul><li>预处理器<ul><li>把存储在不同文件中的源程序聚合在一起</li><li>把成为<strong>宏</strong>的缩写语句转换为原始语句</li></ul></li><li>可重定位的机器代码<ul><li>汇编器生成的机器代码在内存中存放的起始位置L不是固定的</li><li>起始位置+相对地址=绝对地址</li></ul></li><li>加载器<ul><li>修改可重定位地址</li><li>将修改后的指令和数据放到内存中适当的位置</li></ul></li><li>链接器<ul><li>将多个可重定位的机器代码文件（包括库文件）连接到一起</li><li>解决外部内存地址问题</li></ul></li></ul><h1 id="编译系统的结构">编译系统的结构</h1>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>原创</tag>
+      
+      <tag>笔记</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>【计算机网络笔记】传输层</title>
     <link href="/2023/10/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E2%80%94%E2%80%94%E4%BC%A0%E8%BE%93%E5%B1%82/"/>
     <url>/2023/10/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E2%80%94%E2%80%94%E4%BC%A0%E8%BE%93%E5%B1%82/</url>
